@@ -25,13 +25,13 @@ public enum Optional<Wrapped> : _Reflectable, NilLiteralConvertible {
 }
 ```
 
-Reading the first comment in the source code gives us an awesome definition of what an Optional really is. 
+Reading the first comment in the source code gives us a clear definition of what an Optional really is. 
 
 > A type that can represent either a Wrapped value or nil, the absence of a value.
 
-Put in other words, an Optional is a container that wraps the concept of having a value or not.
+In other words, an Optional is a container that wraps the concept of having a value or not.
 
-So why is this useful? Because Swift is a strongly typed language it makes us code for both cases of an Optional, having a value (.Some) or no value at all (.None). When we declare variables with let or var and make them Optional, we are telling the compiler that our variable may contain a value or not. And any subsequent access to our variable will require us to check that it contains a value before performing actions on the wrapped value.
+So why is this useful? Because Swift is a strongly typed language, it makes us code for both cases of an Optional (having a value .Some or no value at all .None). When we declare variables with let or var and make them Optional, we are telling the compiler that our variable may contain a value or not. Any subsequent access to our variable will require us to check that it contains a value before performing actions on the wrapped value.
 
 A simple example:
 
@@ -56,9 +56,9 @@ if let emptyString = emptyString {
 ```
 ---
 
-# What the Functor
+# What the Functor?
 
-So what is a functor? It sounds complicated and only adding to it's complicated nature, it's roots are in Mathematics (Category Theory to be a bit more specific). But let's try and define it in terms a programmer understands instead of mathematical terms.
+So what is a functor? It sounds complicated and only adding to it's complex nature, it's roots are in Mathematics (Category Theory to be a bit more specific). But let's try and define it in terms a programmer understands instead of mathematical terms.
 
 > A functor is any type that defines how map applies to it. 
 
@@ -113,7 +113,7 @@ Armed with the knowledge of what a Functor is, next up is Applicative Functor. L
 
 > An applicative functor is any type that defines apply.
 
-Looking back at the declaration for Optional, we don't find any methods defining apply. Well hmm, by default Optionals aren't applicative functors. But wait! We can add an extension to this built in type and make it work. 
+Looking back at the declaration for Optional, we don't find any methods defining apply. Hmm, by default Optionals aren't applicative functors. But wait! We can add an extension to this built in type and make it work. 
 
 ```swift
 extension Optional {
@@ -261,4 +261,4 @@ func getJsonFromUrl(urlString: String,
 
 # Wrapping Up
 
-Hopefully by now you can see how useful functors, applicative functors, and monads can really be. Apple making Optionals work as functors and monads really make writing intentful code a cinch. And just to keep your brain thinking about this crazy topic, Swift's Array type is also a functor and a monad!
+Hopefully by now you can see how useful functors, applicative functors, and monads can really be. Apple's decision to make Optionals work as functors and monads really allows writing confident code a cinch. And just to keep your brain thinking about this crazy topic, Swift's Array type is also a functor and a monad!
