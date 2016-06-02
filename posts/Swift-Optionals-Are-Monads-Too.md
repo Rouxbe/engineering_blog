@@ -79,17 +79,17 @@ If we break down Optional's implementation of map, it's a function that accepts 
 A more concrete example of map being used looks something like this:
 
 ```swift
-let value: Int? = 42
-let anotherValue = value.map { "\($0 * 2)" } // anotherValue is initialized to "84"
+let optionalWithValue: Int? = 42
+let mappedResultWithValue = optionalWithValue { "\($0 * 2)" } // mappedResultWithValue is initialized to "84"
 ```
 
 In this case, if we fill in the generic blanks, T is Int and U is String. f accepts an Int and returns a String. And finally, map returns a String?. In our case it's value is "84".
 
-The more interesting example of map in use is when value is nil.
+The more interesting example of map in use is when the wrapped value is nil.
 
 ```swift
-let value: Int?
-let anotherValue = value.map { "\($) * 2)" } // anotherValue is initialized to nil
+let optionalWithoutValue: Int?
+let mappedResultWithoutValue = optionalWithoutValue { "\($) * 2)" } // mappedResultWithoutValue is initialized to nil
 ```
 
 When our Optional doesn't contain a value, we skip over calling f with our missing value and just return .None. So if I were guessing how Apple implemented map on the Optional class, I'd figure it would look similar to this:
@@ -158,24 +158,26 @@ So now that we have a good understanding of what each of these abstract concepts
 Formatting NSDate? can be a bit tricky. Because it's an Optional we are forced into using if/let syntax or heaven forbid force unwrapping the Optional.
 
 ```swift
-var date: NSDate?
-var formatted: NSString?
+import Foundation
 
-// some time after date *may* have been set or initialized
+var date1: NSDate?
+var formatted1: NSString?
 
-if let date = date {
-  formatted = NSDateFormatter().stringFromDate(date)
+// some time after date1 *may* have been set or initialized
+
+if let date1 = date1 {
+  formatted1 = NSDateFormatter().stringFromDate(date1)
 }
 ```
 
 Here's functionally equivalent code using `map`:
 
 ```swift
-var date: NSDate?
+var date2: NSDate?
 
-// some time after date *may* have been set or initialized
+// some time after date2 *may* have been set or initialized
 
-var formatted = date.map(NSDateFormatter().stringFromDate)
+var formatted2 = date2.map(NSDateFormatter().stringFromDate)
 ```
 
 To be clear, we aren't aiming for code golf. But switching over from the `if/let` to using `map` makes our intent more clear in my opinion. If the date isn't nil, let's format it as a string. If it is nil, our formatted date string is nil. 
@@ -233,8 +235,8 @@ Let's dive in with an example. Suppose you have a function with an optional comp
 ```swift
 typealias ParseResponseHandler = (responseData: NSData?) -> [String: AnyObject]
 
-func getJsonFromUrl(urlString: String, 
-    parseResponseHandler: ParseResponseHandler) -> [String: AnyObject]? {
+func getJsonFromUrl1(urlString: String, 
+    parseResponseHandler: ParseResponseHandler?) -> [String: AnyObject]? {
   let url = NSURL(string: urlString)
   
   if let url = url, responseData = NSData(contentsOfURL:url), 
@@ -249,7 +251,7 @@ func getJsonFromUrl(urlString: String,
 Notice we have to use if/let syntax to unwrap a slew of optionals before we call the handler with the data. We can simplify this a bit!
 
 ```swift
-func getJsonFromUrl(urlString: String, 
+func getJsonFromUrl2(urlString: String, 
     parseResponseHandler: ParseResponseHandler?) -> [String: AnyObject]? {
   let url = NSURL(string: urlString)
 
